@@ -1,7 +1,9 @@
 import json
 import os
+from dataclasses import dataclass
 
 
+@dataclass
 class Settings():
     APP_ENV: str = "development"
     SERVER_HOST: str = "localhost"
@@ -9,18 +11,20 @@ class Settings():
     SERVER_WORKERS: int = 1
     DEBUG_MODE: bool = False
     LOG_LEVEL: str = "info"
+    API_URL: str = "https://api.nbp.pl/api"
 
 
-def load_config() -> Settings:
+def get_settings() -> Settings:
     """
     Loads configuration options from a JSON file based on the current environment.
     """
+    print("----------------------------------------------")
     if os.getenv("MY_APP_ENV") is None or os.getenv("MY_APP_ENV") == "production":
         config_file = "appsettings.json"
     else:
         config_file = "config.development.json"
     try:
-        with open(config_file, "r") as f:
+        with open(f"./app/{config_file}", "r") as f:
             config_json = f.read()
         config_dict = json.loads(config_json)
         config = Settings(**config_dict)
@@ -29,4 +33,4 @@ def load_config() -> Settings:
     return config
 
 
-settings = load_config()
+config = get_settings()
