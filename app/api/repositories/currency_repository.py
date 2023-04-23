@@ -4,6 +4,7 @@ from datetime import date
 from api.core.config import config, Settings
 from api.core.exceptions import RepositoryError
 from api.core.exceptions import NoDataError
+from app.api.models.repository import ACurrencyRate, CCurrencyRate
 
 
 class CurrencyRepository:
@@ -11,8 +12,8 @@ class CurrencyRepository:
         self.API_URL = config.API_URL
 
     def get_table_currency_codes(self, table_name) -> list[str]:
+        url = f"{self.API_URL}/exchangerates/tables/{table_name}/?format=json"
         try:
-            url = f"{self.API_URL}/exchangerates/tables/{table_name}/?format=json"
             response = requests.get(url, timeout=10)
             response.raise_for_status()
 
@@ -30,9 +31,9 @@ class CurrencyRepository:
             raise RepositoryError(
                 f"Error fetching currency codes: {request_error}")
 
-    def get_average_exchange_rate(self, selected_date: date, currency: str) -> float:
+    def get_average_exchange_rate_a_table(self, selected_date: date, currency: str) -> float:
+        url = f"{self.API_URL}/exchangerates/rates/a/{currency}/{selected_date.strftime('%Y-%m-%d')}/?format=json"
         try:
-            url = f"{self.API_URL}/exchangerates/rates/a/{currency}/{selected_date.strftime('%Y-%m-%d')}/?format=json"
             response = requests.get(url, timeout=10)
             response.raise_for_status()
 
@@ -48,6 +49,64 @@ class CurrencyRepository:
         except requests.exceptions as request_error:
             raise RepositoryError(
                 f"Error fetching currency codes: {request_error}")
+
+    def get_last_n_rates_a_table(self, currency: str, num_days: int) -> list[ACurrencyRate]:
+        url = f"{self.API_URL}/exchangerates/rates/a/{currency}/last/{num_days}/?format=json"
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            rates = data['rates']
+            currency_rates = [ACurrencyRate(
+                date=rate['effectiveDate'], number=rate['no'], rate=float(rate['mid'])) for rate in rates]
+            return currency_rates
+        except requests.exceptions.HTTPError as http_error:
+            if http_error.response.status_code == 404:
+                raise NoDataError("Data not found.")
+            else:
+                raise RepositoryError(
+                    f"Error fetching exchange rates: {http_error}")
+        except requests.exceptions.RequestException as request_error:
+            raise RepositoryError(
+                f"Error fetching exchange rates: {request_error}")
+        except KeyError as key_error:
+            raise RepositoryError(
+                f"Error occurred during parsing data: {key_error}")
+        except ValueError as value_error:
+            raise RepositoryError(
+                f"Error occurred during parsing data: {value_error}")
+        except TypeError as type_error:
+            raise RepositoryError(
+                f"Error occurred during parsing data: {type_error}")
+
+    def get_last_n_rates_c_table(self, currency: str, num_days: int) -> list[CCurrencyRate]:
+        url = f"{self.API_URL}/exchangerates/rates/c/{currency}/last/{num_days}/?format=json"
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            rates = data['rates']
+            currency_rates = [CCurrencyRate(
+                date=rate['effectiveDate'], number=rate['no'], bid=float(rate['bid']), ask=float(rate['ask'])) for rate in rates]
+            return currency_rates
+        except requests.exceptions.HTTPError as http_error:
+            if http_error.response.status_code == 404:
+                raise NoDataError("Data not found.")
+            else:
+                raise RepositoryError(
+                    f"Error fetching exchange rates: {http_error}")
+        except requests.exceptions.RequestException as request_error:
+            raise RepositoryError(
+                f"Error fetching exchange rates: {request_error}")
+        except KeyError as key_error:
+            raise RepositoryError(
+                f"Error occurred during parsing data: {key_error}")
+        except ValueError as value_error:
+            raise RepositoryError(
+                f"Error occurred during parsing data: {value_error}")
+        except TypeError as type_error:
+            raise RepositoryError(
+                f"Error occurred during parsing data: {type_error}")
 
 
 def get_currency_repository() -> CurrencyRepository:

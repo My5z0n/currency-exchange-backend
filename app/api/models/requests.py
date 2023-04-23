@@ -18,3 +18,15 @@ class ExchangeRateRequest(BaseModel):
             raise UserInputError(
                 "Exchange date must be newer than 2002-01-02.")
         return value
+
+
+class MaxMinAverageValueRequest(BaseModel):
+    currency_code: str = Path(...,
+                              regex=r"^[A-Za-z]{3}$", validate_assignment=True)
+    num_quotations: int = Path(..., gt=0, le=255, validate_assignment=True)
+
+
+class MajorDifferenceRequest(BaseModel):
+    currency_code: str = Path(...,
+                              regex=r"^[A-Za-z]{3}$", validate_assignment=True)
+    num_quotations: int = Path(..., gt=0, le=255, validate_assignment=True)
