@@ -3,13 +3,13 @@ import datetime
 from api.models.requests import ExchangeRateRequest
 from api.models.responses import ExchangeRateResponse
 from fastapi import APIRouter, Depends
-from api.services.currency_service import get_currency_service
+from api.services.currency_service import get_currency_service, CurrencyService
 
 router = APIRouter()
 
 
 @router.get("/{currency_code}/{exchange_date}", response_model=ExchangeRateResponse, name="exchange_rate:get")
-def get_exchange_rate_handler(request: ExchangeRateRequest = Depends(), service=Depends(get_currency_service)):
+def get_exchange_rate_handler(request: ExchangeRateRequest = Depends(), service: CurrencyService = Depends(get_currency_service)):
     """Get the average exchange rate for the given currency and date."""
     exchange_rate_result = service.get_exchange_rate(
         request.currency_code, request.exchange_date)
