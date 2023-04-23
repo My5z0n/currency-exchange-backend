@@ -1,7 +1,7 @@
 import json
 import os
 from dataclasses import dataclass
-from api.core.error import ConfigError
+from api.core.exceptions import ConfigError
 
 
 @dataclass

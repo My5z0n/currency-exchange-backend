@@ -4,7 +4,8 @@ from api.core.config import Settings
 from fastapi.exceptions import RequestValidationError
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
-from api.core.error import UserInputError
+from api.core.exceptions import UserInputError
+from app.api.core.exceptions import InternalServiceError
 
 
 def get_application() -> FastAPI:
@@ -23,6 +24,11 @@ async def validation_exception_handler(request, exc):
     error_msg = {"message": "Invalid Request"}
     return JSONResponse(content=error_msg, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+
+@app.exception_handler(InternalServiceError)
+async def internal_service_exception_handler(request, exc):
+    error_msg = {"message": "Internal Service Error"}
+    return JSONResponse(content=error_msg, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 if __name__ == "__main__":
     import uvicorn

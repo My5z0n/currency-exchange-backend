@@ -1,7 +1,7 @@
 import datetime
 
 from fastapi import Depends
-from api.core.error import UserInputError
+from api.core.exceptions import UserInputError
 from api.repositories.currency_repository import CurrencyRepository, get_currency_repository
 
 
