@@ -6,6 +6,10 @@ class InternalServiceError(Exception):
     pass
 
 
+class NoDataError(Exception):
+    pass
+
+
 class ConfigError(InternalServiceError):
     pass
 

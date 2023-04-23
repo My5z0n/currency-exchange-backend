@@ -5,7 +5,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from api.core.exceptions import UserInputError
-from app.api.core.exceptions import InternalServiceError
+from api.core.exceptions import InternalServiceError
+from api.core.exceptions import NoDataError
 
 
 def get_application() -> FastAPI:
@@ -29,6 +30,13 @@ async def validation_exception_handler(request, exc):
 async def internal_service_exception_handler(request, exc):
     error_msg = {"message": "Internal Service Error"}
     return JSONResponse(content=error_msg, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@app.exception_handler(NoDataError)
+async def internal_service_exception_handler(request, exc):
+    error_msg = {"message": "No Data Found"}
+    return JSONResponse(content=error_msg, status_code=status.HTTP_404_NOT_FOUND)
+
 
 if __name__ == "__main__":
     import uvicorn

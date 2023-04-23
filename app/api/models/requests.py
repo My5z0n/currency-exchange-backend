@@ -2,7 +2,7 @@ from datetime import date, datetime
 from pydantic import BaseModel, validator
 from fastapi import Path
 from fastapi.exceptions import RequestValidationError
-from api.core.error import UserInputError
+from api.core.exceptions import UserInputError
 
 
 class ExchangeRateRequest(BaseModel):

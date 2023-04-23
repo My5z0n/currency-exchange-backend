@@ -3,6 +3,7 @@ import requests
 from datetime import date
 from api.core.config import config, Settings
 from api.core.exceptions import RepositoryError
+from api.core.exceptions import NoDataError
 
 
 class CurrencyRepository:
@@ -18,9 +19,16 @@ class CurrencyRepository:
             response_json = response.json()
             currency_codes = [rate['code'].upper()
                               for rate in response_json[0]['rates']]
-        except requests.exceptions as e:
-            raise RepositoryError(f"Error fetching currency codes: {e}")
-        return currency_codes
+            return currency_codes
+        except requests.exceptions.HTTPError as http_error:
+            if http_error.response.status_code == 404:
+                raise NoDataError("Data not found.")
+            else:
+                raise RepositoryError(
+                    f"Error fetching currency codes: {http_error}")
+        except requests.exceptions as request_error:
+            raise RepositoryError(
+                f"Error fetching currency codes: {request_error}")
 
     def get_average_exchange_rate(self, selected_date: date, currency: str) -> float:
         try:
@@ -30,10 +38,16 @@ class CurrencyRepository:
 
             data = response.json()
             rates = data['rates']
-            average_rate = float(rates[0]['mid'])
-        except requests.exceptions as e:
-            raise RepositoryError(f"Error fetching exchange rate: {e}")
-        return average_rate
+            return float(rates[0]['mid'])
+        except requests.exceptions.HTTPError as http_error:
+            if http_error.response.status_code == 404:
+                raise NoDataError("Data not found.")
+            else:
+                raise RepositoryError(
+                    f"Error fetching exchange rate:: {http_error}")
+        except requests.exceptions as request_error:
+            raise RepositoryError(
+                f"Error fetching currency codes: {request_error}")
 
 
 def get_currency_repository() -> CurrencyRepository:
