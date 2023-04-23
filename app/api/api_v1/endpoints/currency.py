@@ -6,7 +6,7 @@ from app.api.services.currency_service import get_currency_service, CurrencyServ
 router = APIRouter()
 
 
-@ router.get(
+@router.get(
     "/max-min-average/{currency_code}/{num_quotations}",
     response_model=MaxMinAverageValueResponse,
     name="currency:max_min_average:get"
@@ -18,7 +18,7 @@ def get_max_min_average_value_handler(request: MaxMinAverageValueRequest = Depen
     return min_max_result
 
 
-@ router.get(
+@router.get(
     "/major-difference/{currency_code}/{num_quotations}}",
     response_model=MajorDifferenceResponse,
     name="currency:major_difference:get"
@@ -27,4 +27,4 @@ def get_major_difference_handler(request: MajorDifferenceRequest = Depends(), se
     """Get the major difference between the buy and ask rate for the given currency and number of quotations."""
     major_diff = service.get_major_diffrence(
         request.currency_code, request.num_quotations)
-    return {"major_diff": major_diff}
+    return {major_diff}
