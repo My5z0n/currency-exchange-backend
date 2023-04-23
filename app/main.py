@@ -34,7 +34,7 @@ async def internal_service_exception_handler(request, exc):
 
 @app.exception_handler(NoDataError)
 async def internal_service_exception_handler(request, exc):
-    error_msg = {"message": "No Data Found"}
+    error_msg = {"message": "Data not found"}
     return JSONResponse(content=error_msg, status_code=status.HTTP_404_NOT_FOUND)
 
 
