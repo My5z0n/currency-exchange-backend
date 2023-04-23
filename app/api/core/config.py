@@ -1,6 +1,7 @@
 import json
 import os
 from dataclasses import dataclass
+from api.core.error import ConfigError
 
 
 @dataclass
@@ -18,7 +19,6 @@ def get_settings() -> Settings:
     """
     Loads configuration options from a JSON file based on the current environment.
     """
-    print("----------------------------------------------")
     if os.getenv("MY_APP_ENV") is None or os.getenv("MY_APP_ENV") == "production":
         config_file = "appsettings.json"
     else:
@@ -29,7 +29,7 @@ def get_settings() -> Settings:
         config_dict = json.loads(config_json)
         config = Settings(**config_dict)
     except (FileNotFoundError, ValueError) as e:
-        raise Exception(f"Error loading configuration: {e}")
+        raise ConfigError(f"Error loading configuration: {e}")
     return config
 
 
