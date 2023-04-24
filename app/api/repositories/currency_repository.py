@@ -4,7 +4,6 @@ import requests
 from api.core.config import Settings, config
 from api.core.exceptions import NoDataError, RepositoryError
 from api.models.repository import CurrencyRate, CurrencyRateCTable
-from fastapi import Depends
 
 
 def handle_request_error(func):

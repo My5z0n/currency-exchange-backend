@@ -1,9 +1,7 @@
-from fastapi.exceptions import RequestValidationError
+from api.core.exceptions import InternalServiceError, NoDataError, UserInputError
 from fastapi import status
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from api.core.exceptions import UserInputError
-from api.core.exceptions import InternalServiceError
-from api.core.exceptions import NoDataError
 
 
 def get_exception_handlers():
