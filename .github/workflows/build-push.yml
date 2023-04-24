@@ -19,7 +19,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          file: ./app/dockerfile
-          context: ./app
+          context: "{{defaultContext}}:app"
+          file: dockerfile
           push: true
           tags: szmnnagel/currency-exchange-backend:latest
