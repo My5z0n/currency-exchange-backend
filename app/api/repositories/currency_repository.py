@@ -4,7 +4,7 @@ from datetime import date
 from api.core.config import config, Settings
 from api.core.exceptions import RepositoryError
 from api.core.exceptions import NoDataError
-from app.api.models.repository import ACurrencyRate, CCurrencyRate
+from api.models.repository import CurrencyRate, CurrencyRateCTable
 
 
 class CurrencyRepository:
@@ -50,14 +50,14 @@ class CurrencyRepository:
             raise RepositoryError(
                 f"Error fetching currency codes: {request_error}")
 
-    def get_last_n_rates_a_table(self, currency: str, num_days: int) -> list[ACurrencyRate]:
+    def get_last_n_rates_a_table(self, currency: str, num_days: int) -> list[CurrencyRate]:
         url = f"{self.API_URL}/exchangerates/rates/a/{currency}/last/{num_days}/?format=json"
         try:
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             data = response.json()
             rates = data['rates']
-            currency_rates = [ACurrencyRate(
+            currency_rates = [CurrencyRate(
                 date=rate['effectiveDate'], number=rate['no'], rate=float(rate['mid'])) for rate in rates]
             return currency_rates
         except requests.exceptions.HTTPError as http_error:
@@ -79,14 +79,14 @@ class CurrencyRepository:
             raise RepositoryError(
                 f"Error occurred during parsing data: {type_error}")
 
-    def get_last_n_rates_c_table(self, currency: str, num_days: int) -> list[CCurrencyRate]:
+    def get_last_n_rates_c_table(self, currency: str, num_days: int) -> list[CurrencyRateCTable]:
         url = f"{self.API_URL}/exchangerates/rates/c/{currency}/last/{num_days}/?format=json"
         try:
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             data = response.json()
             rates = data['rates']
-            currency_rates = [CCurrencyRate(
+            currency_rates = [CurrencyRateCTable(
                 date=rate['effectiveDate'], number=rate['no'], bid=float(rate['bid']), ask=float(rate['ask'])) for rate in rates]
             return currency_rates
         except requests.exceptions.HTTPError as http_error:

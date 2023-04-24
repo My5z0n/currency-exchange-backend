@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from api.models.requests import MaxMinAverageValueRequest, MajorDifferenceRequest
 from api.models.responses import MaxMinAverageValueResponse, MajorDifferenceResponse
-from app.api.services.currency_service import get_currency_service, CurrencyService
+from api.services.currency_service import get_currency_service, CurrencyService
 
 router = APIRouter()
 
@@ -19,12 +19,13 @@ def get_max_min_average_value_handler(request: MaxMinAverageValueRequest = Depen
 
 
 @router.get(
-    "/major-difference/{currency_code}/{num_quotations}}",
+    "/major-difference/{currency_code}/{num_quotations}",
     response_model=MajorDifferenceResponse,
     name="currency:major_difference:get"
 )
 def get_major_difference_handler(request: MajorDifferenceRequest = Depends(), service: CurrencyService = Depends(get_currency_service)):
     """Get the major difference between the buy and ask rate for the given currency and number of quotations."""
+    print("ERROR------------------------")
     major_diff = service.get_major_diffrence(
         request.currency_code, request.num_quotations)
-    return {major_diff}
+    return major_diff

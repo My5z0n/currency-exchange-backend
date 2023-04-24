@@ -3,14 +3,14 @@ from datetime import date
 
 
 @dataclass
-class ACurrencyRate:
+class CurrencyRate:
     date: date
     number: int
     rate: float
 
 
 @dataclass
-class CCurrencyRate:
+class CurrencyRateCTable:
     date: date
     number: int
     bid: float
