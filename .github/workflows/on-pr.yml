@@ -1,8 +1,6 @@
-name: Action will build and test the app
+name: On Pull Request
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -25,8 +23,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          file: ./app/dockerfile
-          context: ./app
+          file: ./dockerfile
+          context: .
           push: false
           tags: szmnnagel/currency-exchange-backend:latest
   test:
