@@ -32,11 +32,19 @@ python3 ./app/main.py
 
 The following endpoints are available:
 
-- `[GET] /exchange-rate/a/{currency_code}/{date}` - Get the exchange rate for a specific currency code and date. 
+- `[GET] /exchange-rate/a/{currency_code}/{date}` - Get the exchange rate for a specific currency code and date.
 
-- `[GET] /exchange-rate/a/max_min_average/{currency_code}/{num_quotations}` - Get the maximum and minimum of exchange rates for a given currency code over the specified number of quotations.  
+- `[GET] /exchange-rate/a/max_min_average/{currency_code}/{num_quotations}` - Get the maximum and minimum of exchange rates for a given currency code over the specified number of quotations.
 
-- `[GET] /exchange-rate/c/major-difference/{currency_code}/{num_quotations}` - Get the largest difference in exchange rates for a given currency code over the specified number of quotations. 
+- `[GET] /exchange-rate/c/major-difference/{currency_code}/{num_quotations}` - Get the largest difference in exchange rates for a given currency code over the specified number of quotations.
+
+## Swagger UI Support
+
+This solution have swagger support for API documentation. To access Swagger UI, go to `http://localhost:8080/docs` in your browser.
+
+Here is a screenshot of Swagger UI in action:
+
+![Swagger UI screenshot](imgs/swagger.png)
 
 ## Docker
 
