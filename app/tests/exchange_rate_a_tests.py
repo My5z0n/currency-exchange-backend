@@ -42,7 +42,7 @@ def test_get_exchange_rate_handler_invalid_date():
 
     # Verify the response is as expected
     assert response.status_code == 422
-    assert response.json() == {"message": "Invalid Request"}
+    assert response.json() == {"message": "Unprocessable Request"}
 
 
 def test_get_exchange_rate_handler_invalid_currency():
@@ -51,7 +51,7 @@ def test_get_exchange_rate_handler_invalid_currency():
 
     # Verify the response is as expected
     assert response.status_code == 422
-    assert response.json() == {"message": "Invalid Request"}
+    assert response.json() == {"message": "Unprocessable Request"}
 
 
 def test_get_exchange_rate_handler_future_date():
@@ -62,7 +62,7 @@ def test_get_exchange_rate_handler_future_date():
 
     # Verify the response is as expected
     assert response.status_code == 422
-    assert response.json() == {"message": "Invalid Request"}
+    assert response.json() == {"message": "Unprocessable Request"}
 
 
 def test_get_exchange_rate_handler_past_date():
