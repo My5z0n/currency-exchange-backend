@@ -2,6 +2,17 @@
 
 This is the backend solution for the Backend Oriented Task Dynatrance 2023 in Gdansk, realized by **Szymon Nagel** as part of a recruitment process. It is designed to provide exchange rate data using [NBP API](http://api.nbp.pl/)
 
+## About the Application
+
+This application is built using the [FastAPI](https://fastapi.tiangolo.com/) Python web framework to provide a REST API for currency exchange data. It is containerized using Docker and can be deployed using Docker Compose. The code follows modern software development practices such as unit testing using Pytest and continuous integration using GitHub Actions.
+
+Other notable features of this application include:
+
+- API documentation using Swagger UI,
+- Dependency injection using FastAPI,
+- Modular code structure based on the Repository, Service, Model, and Controller design pattern,
+- Support for configuration files for development and production environments.
+
 ## Requirements
 
 - Python 3.10
