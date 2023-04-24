@@ -1,10 +1,13 @@
-from fastapi.testclient import TestClient
-from unittest.mock import MagicMock
 from datetime import date, timedelta
-from api.services.currency_service import CurrencyService
-from api.core.exceptions import NoDataError
-from main import app
+from unittest.mock import MagicMock
 
+from api.core.exceptions import NoDataError
+from api.models.repository import CurrencyRate
+from api.models.responses import MaxMinAverageValueResponse
+from api.repositories.currency_repository import CurrencyRepository
+from api.services.currency_service import CurrencyService
+from fastapi.testclient import TestClient
+from main import app
 
 client = TestClient(app)
 
@@ -72,3 +75,43 @@ def test_get_exchange_rate_handler_past_date():
     # Verify the response is as expected
     assert response.status_code == 404
     assert response.json() == {"message": "Data not found"}
+
+
+def test_get_max_min_average_value():
+    mocked_currency_repository = MagicMock(spec=CurrencyRepository)
+    currency_service = CurrencyService(mocked_currency_repository)
+
+    # Mocked data
+    currency_code = "USD"
+    last_quotations = 10
+    currency_rates = [
+        CurrencyRate(date(2022, 4, 1), 1, 1.5),
+        CurrencyRate(date(2022, 4, 2), 1, 1.2),
+        CurrencyRate(date(2022, 4, 3), 1, 1.8),
+        CurrencyRate(date(2022, 4, 4), 1, 1.6),
+        CurrencyRate(date(2022, 4, 5), 1, 1.3),
+        CurrencyRate(date(2022, 4, 6), 1, 1.7),
+        CurrencyRate(date(2022, 4, 7), 1, 1.9),
+        CurrencyRate(date(2022, 4, 8), 1, 1.4),
+        CurrencyRate(date(2022, 4, 9), 1, 1.1),
+        CurrencyRate(date(2022, 4, 10), 1, 1.0)
+    ]
+
+    # Set up mock
+    mocked_currency_repository.get_last_n_rates_a_table.return_value = currency_rates
+
+    # Expected result
+    expected_result = MaxMinAverageValueResponse(
+        currency_code=currency_code,
+        span_begin_date=date(2022, 4, 1),
+        span_end_date=date(2022, 4, 10),
+        max_value=1.9,
+        min_value=1.0
+    )
+
+    # Call the service method
+    result = currency_service.get_max_min_average_value(
+        currency_code, last_quotations)
+
+    # Check the result
+    assert result == expected_result
