@@ -1,6 +1,5 @@
 from api.models.requests import ExchangeRateRequest, MaxMinAverageValueRequest
-from api.models.responses import (ExchangeRateResponse,
-                                  MaxMinAverageValueResponse)
+from api.models.responses import ExchangeRateResponse, MaxMinAverageValueResponse
 from api.services.currency_service import CurrencyService, get_currency_service
 from fastapi import APIRouter, Depends
 

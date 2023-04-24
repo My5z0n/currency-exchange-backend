@@ -1,9 +1,12 @@
 import datetime
 
-from fastapi import Depends
 from api.core.exceptions import UserInputError
-from api.repositories.currency_repository import CurrencyRepository, get_currency_repository
 from api.models.responses import MajorDifferenceResponse, MaxMinAverageValueResponse
+from api.repositories.currency_repository import (
+    CurrencyRepository,
+    get_currency_repository,
+)
+from fastapi import Depends
 
 
 class CurrencyService():
