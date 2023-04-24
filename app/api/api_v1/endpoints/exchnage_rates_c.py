@@ -1,21 +1,9 @@
+from api.models.requests import MajorDifferenceRequest
+from api.models.responses import MajorDifferenceResponse
+from api.services.currency_service import CurrencyService, get_currency_service
 from fastapi import APIRouter, Depends
-from api.models.requests import MaxMinAverageValueRequest, MajorDifferenceRequest
-from api.models.responses import MaxMinAverageValueResponse, MajorDifferenceResponse
-from api.services.currency_service import get_currency_service, CurrencyService
 
 router = APIRouter()
-
-
-@router.get(
-    "/max-min-average/{currency_code}/{num_quotations}",
-    response_model=MaxMinAverageValueResponse,
-    name="currency:max_min_average:get"
-)
-def get_max_min_average_value_handler(request: MaxMinAverageValueRequest = Depends(), service: CurrencyService = Depends(get_currency_service)):
-    """Get the max and min average value for the given currency and number of quotations."""
-    min_max_result = service.get_max_min_average_value(
-        request.currency_code, request.num_quotations)
-    return min_max_result
 
 
 @router.get(
