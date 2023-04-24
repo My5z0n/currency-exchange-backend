@@ -25,7 +25,6 @@ def get_max_min_average_value_handler(request: MaxMinAverageValueRequest = Depen
 )
 def get_major_difference_handler(request: MajorDifferenceRequest = Depends(), service: CurrencyService = Depends(get_currency_service)):
     """Get the major difference between the buy and ask rate for the given currency and number of quotations."""
-    print("ERROR------------------------")
     major_diff = service.get_major_diffrence(
         request.currency_code, request.num_quotations)
     return major_diff
