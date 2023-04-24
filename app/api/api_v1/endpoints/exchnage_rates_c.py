@@ -15,4 +15,4 @@ def get_major_difference_handler(request: MajorDifferenceRequest = Depends(), se
     """Get the major difference between the buy and ask rate for the given currency and number of quotations."""
     major_diff = service.get_major_diffrence(
         request.currency_code, request.num_quotations)
-    return {major_diff}
+    return major_diff

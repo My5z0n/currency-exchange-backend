@@ -14,7 +14,7 @@ def get_exchange_rate_handler(request: ExchangeRateRequest = Depends(), service:
         request.currency_code, request.exchange_date)
     exchange_rate_response = ExchangeRateResponse(
         currency_code=request.currency_code, exchange_date=request.exchange_date, average_exchange_rate=exchange_rate_result)
-    return {exchange_rate_response}
+    return exchange_rate_response
 
 
 @router.get(
@@ -26,4 +26,4 @@ def get_max_min_average_value_handler(request: MaxMinAverageValueRequest = Depen
     """Get the max and min average value for the given currency and number of quotations."""
     min_max_result = service.get_max_min_average_value(
         request.currency_code, request.num_quotations)
-    return {min_max_result}
+    return min_max_result
