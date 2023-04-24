@@ -8,7 +8,7 @@ from api.core.exceptions import ConfigError
 class Settings():
     APP_ENV: str = "development"
     SERVER_HOST: str = "localhost"
-    SERVER_PORT: int = 8000
+    SERVER_PORT: int = 8080
     SERVER_WORKERS: int = 1
     DEBUG_MODE: bool = False
     LOG_LEVEL: str = "info"
@@ -19,10 +19,13 @@ def get_settings() -> Settings:
     """
     Loads configuration options from a JSON file based on the current environment.
     """
-    if os.getenv("MY_APP_ENV") is None or os.getenv("MY_APP_ENV") == "production":
+
+    if os.getenv("APP_ENV") is None or os.getenv("APP_ENV") == "production":
+        print("Loading production configuration...")
         config_file = "appsettings.json"
     else:
-        config_file = "config.development.json"
+        print("Loading development configuration...")
+        config_file = "appsettings.development.json"
     try:
         with open(f"./app/{config_file}", "r") as f:
             config_json = f.read()
