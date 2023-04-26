@@ -6,6 +6,6 @@ services:
       context: ./app
       dockerfile: ./dockerfile
     ports:
-      - "8000:8000"
+      - "8000:80"
     environment:
       - APP_ENV=production
