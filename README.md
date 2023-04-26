@@ -70,7 +70,7 @@ docker build -f "app/dockerfile" -t currency-exchange-backend:latest "app"
 To run the Docker container:
 
 ```
-docker run -p 80:80 -e APP_ENV=dev currencyexchangebackend:latest
+docker run -p 8080:8080 -e APP_ENV=dev currencyexchangebackend:latest
 ```
 
 Alternatively it is possible to use docker-compose in prod/dev versions:
